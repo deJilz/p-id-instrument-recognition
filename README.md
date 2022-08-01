@@ -1,5 +1,5 @@
-# p-id-instrument-recognition
-======
+# P&ID Instrument Recognition
+
 
 This project is to create computer vision code that can assist in P&ID development.
 
