@@ -30,7 +30,7 @@ for img_path in path_list :
 
         # draw the detected circles on the original image and show
         for i in circles [:]:
-        cv2.circle ( img , ( i [0] , i [1]) , i [2] , (255 , 0 , 255) , 7)
+            cv2.circle ( img , ( i [0] , i [1]) , i [2] , (255 , 0 , 255) , 7)
         cv2.imshow ('detected circles ', img )
         cv2.waitKey ()
         # cv2. imwrite ( './ Dataset / images / circles / '+ img_name + '. png', img )
