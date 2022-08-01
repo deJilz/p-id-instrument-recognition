@@ -12,3 +12,9 @@ The starting point of this repo was essentially forked from the masters thesis o
 
 ### Requirements 
 **tesseract** needs local files and to be added to PATH. docs are [here](https://pypi.org/project/pytesseract/)
+
+
+## Future Features
+- Output to Excel rather than txt
+- draw circles onto original pdf rather than newly generated (and compressed) pngs
+- sheet - > page number generator
