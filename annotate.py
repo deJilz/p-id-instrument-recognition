@@ -10,17 +10,11 @@ from pdf_annotate import PdfAnnotator, Appearance, Location
 
 # import other modules from this project
 
-
-
 '''
 from pdf_annotate import PdfAnnotator, Appearance, Location
 
 annotator = PdfAnnotator('test.pdf')
-annotator.add_annotation(
-  'square',
-  Location=Location(x1=10, y1=20, x2=100, y2=100, page=0),
-  Appearance=Appearance(fill=(1, 0, 0))
-)
+annotator.add_annotation('square', Location=Location(x1=10, y1=20, x2=100, y2=100, page=0), Appearance=Appearance(fill=(1, 0, 0)))
 annotator.write('annotated.pdf')
 
 ---
@@ -29,10 +23,6 @@ fname: pdfname N.txt
 instrument x y r:
 LY1104 4698 3338 53
 HC1101 3888 1162 53
-= A1101 4158 1162 53
-IC!1104 4698 3700 53
-FQ1101 4158 1054 53
-
 '''
 
 def draw_circles(circ_fldr, pandidfname):
@@ -57,21 +47,16 @@ def draw_circles(circ_fldr, pandidfname):
                         # do math with read in coordinates
                         x, y, r = int(x), int(y), int(r)
                         
-                        # currently wrong and probably different for every pdf
-                        # x1m = (x - r)/4
-                        # x2m = (x + r)/4
-                        # y1m = (-y)/5 - r +1800
-                        # y2m = (-y)/5 + r  +1800
-                        
+                        # adjust coordinates from png to pdf
                         x1m = (x - r)/3
                         x2m = (x + r)/3
-                        y1m = (-y+r+1683)/3
-                        y2m = (-y-r+1683)/3
+                        y1m = (-y+r+5050)/3
+                        y2m = (-y-r+5050)/3
+                        
                     except:
                         print("issue with", line)
                         continue
-                    #print("coords",x1m,y1m,x2m,y2m)
-                    annotator.add_annotation('circle', Location(x1=x1m, y1=y1m, x2=x2m, y2=y2m, page=0), Appearance(stroke_color=(1, 0, 0),stroke_width=1))
+                    annotator.add_annotation('circle', Location(x1=x1m, y1=y1m-36, x2=x1m+36, y2=y1m, page=0), Appearance(stroke_color=(1, 0, 0),stroke_width=1))
                     
                     
     #annotator.write(savefname)
