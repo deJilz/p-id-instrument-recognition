@@ -1,6 +1,7 @@
 
 # built in
 import os
+import pathlib
 
 # 3rd party
 import numpy as np
@@ -105,6 +106,8 @@ def recognize_instruments( img_fldr, cut_surroundings_fldr, circle_fldr, ):
 def recognize_sheet_numbers( img_fldr, circle_fldr, pandidfname):
     files = os.listdir ( img_fldr ) # list all the files ' names
     counter = 0
+    sheet2pagetxt = open ( os.path.join(os.getcwd(),pandidfname + " - SHEET2PAGE.txt") , 'w')
+    sheet2pagetxt.write("sheet\t\tpage\n")
     for file in files :
         # print ( file )
         original_image_name = os.path.join ( img_fldr , file )
@@ -115,24 +118,27 @@ def recognize_sheet_numbers( img_fldr, circle_fldr, pandidfname):
             original_image = cv2.imread ( original_image_name )
             shape = original_image.shape
             
-            cv2. imshow ( ' orig ', original_image )
-            cv2. waitKey (0)
-            
+             
             h = shape [0] # Y ( height ) = 1786
             w = shape [1] # X ( width ) = 2526
             #print ("h = ", h )
             #print ("w = ", w )
-            cropped_y_start = int( h * 0.9) # y start
-            cropped_y_end = int( h * 0.9) # y end
-            cropped_x_start = int( w * 0.9) # x start
-            cropped_x_end = int( w * 0.9) # x end
+            cropped_y_start = int( h * 0.97) # y start
+            cropped_y_end = int( h * 1) # y end
+            cropped_x_start = int( w * 0.94) # x start
+            cropped_x_end = int( w * 1) # x end
+            
             cropped_img = original_image [ cropped_y_start : cropped_y_end , cropped_x_start : cropped_x_end ] # crop
             
             # throw cropped_img into pytesseract and get sheet text
+            # for circle text - text = pytesseract.image_to_string (cropped_circles_rgb , config = custom_config )
+            #cv2.imshow (" cropped ", cropped_img )
+            #cv2.waitKey ()
             
-            cv2. imshow ( ' cropped ', cropped_img )
-            cv2. waitKey (0)
             
+            text = pytesseract.image_to_string ( cropped_img ) # get text from image
+            text = text.replace (' ', '').replace ('SHEET','').replace('\n','') # replace dumb stuff
             
-            
-            # getting an error about width and height not being >0
+            page_num = int(pathlib.Path(file).stem.split(" ")[-1])# get image page number
+            #sheet2pagetxt.write(text + "\t\t" + str(page_num) + "\n") # write to file
+            sheet2pagetxt.write("{:<12s}{:<10s}\n".format(text, str(page_num)))
