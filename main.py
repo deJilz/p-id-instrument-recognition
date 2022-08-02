@@ -16,7 +16,6 @@ import file_conversions
 
 
 __author__ = "Connor DeJohn"
-__version__ = "0.1"
 """
 August 2022 
 
@@ -39,10 +38,6 @@ def main():
                         help='open pdf file after generating')
     parser.add_argument('--keep', action='store_true',
                         help='dont delete image files')
-    # parser.add_argument('--recur', action='store_true',
-                        # help='An optional flag to merge recursively.')
-    # parser.add_argument('--sortby', type=str,
-                        # help='how to sort merged pdfs: a for alphabetical, d for last modified date')
     args = parser.parse_args()
     cur_dir = os.getcwd()
     
@@ -58,7 +53,7 @@ def main():
         quit()
     
     # declare some variables and fld names
-    image_source_fldr = os.path.join(cur_dir,"images/") # allows user to customize and possible deletion afterwards
+    image_source_fldr = os.path.join(cur_dir,"images/") # allows customization and deletion afterwards
     cut_fldr = os.path.join(image_source_fldr, "results/")
     circ_fldr = os.path.join(image_source_fldr, "circles/")
     
