@@ -46,19 +46,19 @@ def pdf2im(pandidfname, image_source_fld):
 
 
 
-def im2pdf(image_folder, pandidfname):
+# def im2pdf(image_folder, pandidfname):
     
-    pdf = FPDF('L', 'pt', (5052,7152)) # specific for 17x11 paper
-    pdf.set_auto_page_break(0)
-    savefname = os.getcwd() + "/" + pandidfname +" - MARKED INST.pdf"
+    # pdf = FPDF('L', 'pt', (5052,7152)) # specific for 17x11 paper
+    # pdf.set_auto_page_break(0)
+    # savefname = os.getcwd() + "/" + pandidfname +" - MARKED INST.pdf"
 
-    for root, dirs, files in os.walk(image_folder):
-        for f in files:
-            if f.endswith(".png"):
-                pdf.add_page()
-                img = Image.open(os.path.join(root,f))
-                #print("size",img.size)
-                pdf.image(os.path.join(root,f),type='PNG')#,w=img.width,h=img.height
+    # for root, dirs, files in os.walk(image_folder):
+        # for f in files:
+            # if f.endswith(".png"):
+                # pdf.add_page()
+                # img = Image.open(os.path.join(root,f))
+                # #print("size",img.size)
+                # pdf.image(os.path.join(root,f),type='PNG')#,w=img.width,h=img.height
 
-    pdf.output(savefname, "F")
-    return savefname
+    # pdf.output(savefname, "F")
+    # return savefname

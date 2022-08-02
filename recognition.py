@@ -86,7 +86,8 @@ def recognize_instruments( img_fldr, cut_surroundings_fldr, circle_fldr, ):
                     file.write ( text +' ') # instrument
                     file.write (str ( i [0]) +' ') # center point x
                     file.write (str ( i [1]) +' ') # center point y
-                    file.write (str ( i [2]) +'\n') #r
+                    file.write (str ( i [2]) +' ') #r
+                    file.write( recognize_sheet_numbers_for_sheet(img_fldr + img_path) + "\n") # sheet number 
 
 
 
@@ -101,9 +102,28 @@ def recognize_instruments( img_fldr, cut_surroundings_fldr, circle_fldr, ):
     #print (" Number of recognized instruments in all images :")
     #print ( all_instruments_counter )
     
+def recognize_sheet_numbers_for_sheet(original_image_name):
+    # gets passed a full path of an image to analyze
+    # ie    C:/user/.../images/pdfname N.png
+    original_image = cv2.imread ( original_image_name )
+    shape = original_image.shape
+    h = shape [0] # Y ( height ) = 1786
+    w = shape [1] # X ( width ) = 2526
+    #print ("h = ", h )
+    #print ("w = ", w )
+    cropped_y_start = int( h * 0.97) # y start
+    cropped_y_end = int( h * 1) # y end
+    cropped_x_start = int( w * 0.94) # x start
+    cropped_x_end = int( w * 1) # x end
     
+    cropped_img = original_image [ cropped_y_start : cropped_y_end , cropped_x_start : cropped_x_end ] # crop
+
+    sheet_num = pytesseract.image_to_string ( cropped_img ) # get text from image
+    sheet_num = sheet_num.replace (' ', '').replace ('SHEET','').replace('\n','') # replace dumb stuff
     
-def recognize_sheet_numbers( img_fldr, circle_fldr, pandidfname):
+    return sheet_num
+    
+def recognize_sheet_numbers_for_document( img_fldr, circle_fldr, pandidfname):
     files = os.listdir ( img_fldr ) # list all the files ' names
     counter = 0
     sheet2pagetxt = open ( os.path.join(os.getcwd(),pandidfname + " - SHEET2PAGE.txt") , 'w')

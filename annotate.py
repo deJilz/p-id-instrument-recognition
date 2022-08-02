@@ -43,7 +43,7 @@ def draw_circles(circ_fldr, pandidfname):
                     if line.find("x y r:") > 0: continue # ignore the first line
                     # read in lines
                     try:
-                        tag, x, y, r = line.strip().split(" ")#[-3:-1] ** deal with if theres a spcae in the tag
+                        tag, x, y, r, sheet = line.strip().split(" ")#[-3:-1] ** deal with if theres a spcae in the tag
                         # do math with read in coordinates
                         x, y, r = int(x), int(y), int(r)
                         

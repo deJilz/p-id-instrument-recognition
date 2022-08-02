@@ -11,7 +11,7 @@ import shutil
 
 # import other modules from this project
 from cut_surroundings import crop_image
-from recognition import recognize_instruments, recognize_sheet_numbers
+from recognition import recognize_instruments, recognize_sheet_numbers_for_document
 import file_conversions
 import annotate
 
@@ -73,9 +73,9 @@ def main():
     if args.flag_inst:
         # flag instruments in new document
         
-        #file_conversions.pdf2im(args.source, image_source_fldr) # convert each sheet to an image
-        #crop_image(image_source_fldr, cut_fldr) # crop each image - will probably be something opposite for 
-        #recognize_instruments(image_source_fldr, cut_fldr, circ_fldr)
+        file_conversions.pdf2im(args.source, image_source_fldr) # convert each sheet to an image
+        crop_image(image_source_fldr, cut_fldr) # crop each image - will probably be something opposite for 
+        recognize_instruments(image_source_fldr, cut_fldr, circ_fldr)
         #circle_file = file_conversions.im2pdf(circ_fldr, args.source) # convert new images to pdf
         circle_file = annotate.draw_circles(circ_fldr, args.source) # annotate original pdf
         
@@ -89,7 +89,7 @@ def main():
     elif args.sheet2page:
         
         file_conversions.pdf2im(args.source, image_source_fldr) # convert each sheet to an image
-        recognize_sheet_numbers(image_source_fldr, circ_fldr, args.source) #img_fldr, cut_surroundings_fldr, circle_fldr, ):
+        recognize_sheet_numbers_for_document(image_source_fldr, circ_fldr, args.source) #img_fldr, cut_surroundings_fldr, circle_fldr, ):
 
     else:
         print("welp nothing else is implemented sooooo")
