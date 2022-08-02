@@ -34,7 +34,10 @@ def recognize_instruments( img_fldr, cut_surroundings_fldr, circle_fldr, ):
 
             # Hough Circle Transform with OpenCV
             circles1 = cv2.HoughCircles ( gray , cv2.HOUGH_GRADIENT , 1 , 10 , param1 =100 , param2 =60 , minRadius =40, maxRadius =60)
-            circles = circles1 [0 , : , :]
+            try:
+                circles = circles1 [0 , : , :]
+            except:
+                continue
             circles = np.uint16 ( np.around ( circles ) )
             counter = 0
 
@@ -96,3 +99,40 @@ def recognize_instruments( img_fldr, cut_surroundings_fldr, circle_fldr, ):
 
     #print (" Number of recognized instruments in all images :")
     #print ( all_instruments_counter )
+    
+    
+    
+def recognize_sheet_numbers( img_fldr, circle_fldr, pandidfname):
+    files = os.listdir ( img_fldr ) # list all the files ' names
+    counter = 0
+    for file in files :
+        # print ( file )
+        original_image_name = os.path.join ( img_fldr , file )
+        # dest_image_name = os. path.join ( dest_path , file )
+        # dest_image_name = dest_path + str( counter ) + ".png"
+        if os.path.isfile ( original_image_name ) :
+            #print ( original_image_name )
+            original_image = cv2.imread ( original_image_name )
+            shape = original_image.shape
+            
+            cv2. imshow ( ' orig ', original_image )
+            cv2. waitKey (0)
+            
+            h = shape [0] # Y ( height ) = 1786
+            w = shape [1] # X ( width ) = 2526
+            #print ("h = ", h )
+            #print ("w = ", w )
+            cropped_y_start = int( h * 0.9) # y start
+            cropped_y_end = int( h * 0.9) # y end
+            cropped_x_start = int( w * 0.9) # x start
+            cropped_x_end = int( w * 0.9) # x end
+            cropped_img = original_image [ cropped_y_start : cropped_y_end , cropped_x_start : cropped_x_end ] # crop
+            
+            # throw cropped_img into pytesseract and get sheet text
+            
+            cv2. imshow ( ' cropped ', cropped_img )
+            cv2. waitKey (0)
+            
+            
+            
+            # getting an error about width and height not being >0

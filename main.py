@@ -11,7 +11,7 @@ import shutil
 
 # import other modules from this project
 from cut_surroundings import crop_image
-from recognition import recognize_instruments
+from recognition import recognize_instruments, recognize_sheet_numbers
 import file_conversions
 import annotate
 
@@ -34,10 +34,13 @@ def main():
                         help='pdf p&id in working directory that will be parsed')
     parser.add_argument('--flag_inst', action='store_true',
                         help='draw circles around p&id instrument circles in a new pdf')
+    parser.add_argument('--sheet2page', action='store_true',
+                        help='create sheet and page number listing')
     parser.add_argument('--open', action='store_true',
                         help='open pdf file after generating')
     parser.add_argument('--keep', action='store_true',
                         help='dont delete image files')
+                        
     args = parser.parse_args()
     cur_dir = os.getcwd()
     
@@ -53,7 +56,7 @@ def main():
         quit()
     
     # parse options
-    if not args.flag_inst: # some option must be chosen - THIS SHOULD LIST ALL
+    if not args.flag_inst and not args.sheet2page: # some option must be chosen - THIS SHOULD LIST ALL
         print("[*] Please choose an option to execute. Check -h for help")
         quit()
     
@@ -70,9 +73,9 @@ def main():
     if args.flag_inst:
         # flag instruments in new document
         
-        file_conversions.pdf2im(args.source, image_source_fldr) # convert each sheet to an image
-        crop_image(image_source_fldr, cut_fldr) # crop each image - will probably be something opposite for 
-        recognize_instruments(image_source_fldr, cut_fldr, circ_fldr)
+        #file_conversions.pdf2im(args.source, image_source_fldr) # convert each sheet to an image
+        #crop_image(image_source_fldr, cut_fldr) # crop each image - will probably be something opposite for 
+        #recognize_instruments(image_source_fldr, cut_fldr, circ_fldr)
         #circle_file = file_conversions.im2pdf(circ_fldr, args.source) # convert new images to pdf
         circle_file = annotate.draw_circles(circ_fldr, args.source) # annotate original pdf
         
@@ -83,12 +86,11 @@ def main():
         # open new pdf
         if args.open:
             os.startfile(circle_file)
+    elif args.sheet2page:
         
-        
-    elif args.sh2pg:
         file_conversions.pdf2im(args.source, image_source_fldr) # convert each sheet to an image
-        # write the sheet block to txt file - need to create method
-        
+        recognize_sheet_numbers(image_source_fldr, circ_fldr, args.source) #img_fldr, cut_surroundings_fldr, circle_fldr, ):
+
     else:
         print("welp nothing else is implemented sooooo")
         quit()

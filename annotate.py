@@ -56,7 +56,7 @@ def draw_circles(circ_fldr, pandidfname):
                     except:
                         print("issue with", line)
                         continue
-                    annotator.add_annotation('circle', Location(x1=x1m, y1=y1m-36, x2=x1m+36, y2=y1m, page=0), Appearance(stroke_color=(1, 0, 0),stroke_width=1))
+                    annotator.add_annotation('circle', Location(x1=x1m, y1=y1m-36, x2=x1m+36, y2=y1m, page=page_num), Appearance(stroke_color=(1, 0, 0),stroke_width=1))
                     
                     
     #annotator.write(savefname)
