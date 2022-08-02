@@ -3,6 +3,9 @@
 
 This project is to create computer vision code that can assist in P&ID development.
 
+## Features
+- Circular instrument highlighting: Will add red circles to all circular instruments on P&ID
+- Sheet to page report: Produces txt document relating sheet (ie 301) to page (ie pg 3)
 
 
 
@@ -16,6 +19,4 @@ The starting point of this repo was essentially forked from the masters thesis o
 
 ## Future Features
 - Output to Excel rather than txt
-- draw circles onto original pdf rather than newly generated (and compressed) pngs
-- sheet - > page number generator
 - shift image interpretation to byte stream rather than saving images
