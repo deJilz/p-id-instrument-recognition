@@ -1,4 +1,7 @@
 absl-py==1.2.0
+aiofiles==0.8.0
+anyio==3.6.1
+attrs==22.1.0
 certifi==2022.6.15
 charset-normalizer==2.1.0
 ci-info==0.3.0
@@ -8,11 +11,15 @@ configobj==5.0.6
 configparser==5.2.0
 etelemetry==0.3.0
 filelock==3.7.1
+fonttools==4.34.4
 fpdf==1.7.2
+frontend==0.0.3
 future==0.18.2
+h11==0.13.0
 httplib2==0.20.4
 idna==3.3
 isodate==0.6.1
+itsdangerous==2.1.2
 looseversion==1.0.1
 lxml==4.9.1
 networkx==2.8.5
@@ -23,6 +30,8 @@ opencv-python==4.6.0.66
 packaging==21.3
 pandas==1.4.3
 pathlib==1.0.1
+pdf-annotate==0.12.0
+pdfrw==0.4
 Pillow==9.2.0
 prov==2.0.0
 pydot==1.4.2
@@ -38,5 +47,8 @@ requests==2.28.1
 scipy==1.9.0
 simplejson==3.17.6
 six==1.16.0
+sniffio==1.2.0
+starlette==0.20.4
 traits==6.3.2
 urllib3==1.26.11
+uvicorn==0.18.2

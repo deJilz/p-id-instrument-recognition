@@ -21,7 +21,7 @@ August 2022
 
 program to look at instruments in p&ids
 
-1. add circles to current pdf
+1. add circles to current pdf (https://github.com/plangrid/pdf-annotate)
 2. get txt file of tags
 3. get excel file of tags
 4. get txt file of sheet -> page relation
@@ -52,6 +52,11 @@ def main():
         print("[*] The source was not found in the current working directory.")
         quit()
     
+    # parse options
+    if not args.flag_inst: # some option must be chosen - THIS SHOULD LIST ALL
+        print("[*] Please choose an option to execute. Check -h for help")
+        quit()
+    
     # declare some variables and fld names
     image_source_fldr = os.path.join(cur_dir,"images/") # allows customization and deletion afterwards
     cut_fldr = os.path.join(image_source_fldr, "results/")
@@ -61,11 +66,6 @@ def main():
     os.makedirs(image_source_fldr, exist_ok=True)
     os.makedirs(cut_fldr, exist_ok=True)
     os.makedirs(circ_fldr, exist_ok=True)
-    
-    # parse options
-    if not args.flag_inst: # some option must be chosen - THIS SHOULD LIST ALL
-        print("[*] Please choose an option to execute. Check -h for help")
-        quit()
         
     if args.flag_inst:
         # flag instruments in new document
