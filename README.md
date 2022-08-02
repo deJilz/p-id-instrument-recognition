@@ -18,3 +18,4 @@ The starting point of this repo was essentially forked from the masters thesis o
 - Output to Excel rather than txt
 - draw circles onto original pdf rather than newly generated (and compressed) pngs
 - sheet - > page number generator
+- shift image interpretation to byte stream rather than saving images
