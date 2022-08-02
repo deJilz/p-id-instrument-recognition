@@ -13,7 +13,7 @@ import shutil
 from cut_surroundings import crop_image
 from recognition import recognize_instruments
 import file_conversions
-
+import annotate
 
 __author__ = "Connor DeJohn"
 """
@@ -73,7 +73,8 @@ def main():
         file_conversions.pdf2im(args.source, image_source_fldr) # convert each sheet to an image
         crop_image(image_source_fldr, cut_fldr) # crop each image - will probably be something opposite for 
         recognize_instruments(image_source_fldr, cut_fldr, circ_fldr)
-        circle_file = file_conversions.im2pdf(circ_fldr, args.source) # convert new images to pdf
+        #circle_file = file_conversions.im2pdf(circ_fldr, args.source) # convert new images to pdf
+        circle_file = annotate.draw_circles(circ_fldr, args.source) # annotate original pdf
         
         # delete image folders
         if not args.keep:
