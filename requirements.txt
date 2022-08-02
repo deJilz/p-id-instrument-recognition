@@ -8,6 +8,7 @@ configobj==5.0.6
 configparser==5.2.0
 etelemetry==0.3.0
 filelock==3.7.1
+fpdf==1.7.2
 future==0.18.2
 httplib2==0.20.4
 idna==3.3
