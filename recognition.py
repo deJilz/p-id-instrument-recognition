@@ -17,7 +17,7 @@ cv2.waitKey ()
 '''
 
 
-def recognize_instruments( img_fldr, circle_fldr, noexcel):
+def recognize_instruments( img_fldr, circle_fldr, noexcel, noannot):
     
     # Create excel workbook and write headers
     wbcounter = 0
@@ -38,7 +38,7 @@ def recognize_instruments( img_fldr, circle_fldr, noexcel):
             img_name = img_path.split ('.') [0]
             
             # Create txt and write headers
-            file_path = os.path.join(img_fldr,"circles/"+img_name+".txt")
+            file_path = os.path.join(circle_fldr+img_name+".txt")
             file = open ( file_path , 'w')
             file.write ('instrument x y r:\n')
             img = cv2.imread ( img_fldr + img_path )
@@ -57,8 +57,12 @@ def recognize_instruments( img_fldr, circle_fldr, noexcel):
             for i in circles [:]:
                 cv2.circle ( img , ( i [0] , i [1]) , i [2] , (255 , 0 , 255) , 7)
             
-            # save image
-            cv2.imwrite (os.path.join(circle_fldr ,img_name + '.png'), img )
+            if not noannot:
+                # save image
+                cv2.imwrite (os.path.join(circle_fldr ,img_name + '.png'), img )
+            
+            # get current sheet number
+            sheet_n = recognize_sheet_numbers_for_sheet(img_fldr + img_path)
             
             # go through each circle that cv2 found
             for i in circles [:]:
@@ -95,7 +99,7 @@ def recognize_instruments( img_fldr, circle_fldr, noexcel):
                     file.write (str ( i [0]) +' ') # center point x
                     file.write (str ( i [1]) +' ') # center point y
                     file.write (str ( i [2]) +' ') #r
-                    sheet_n = recognize_sheet_numbers_for_sheet(img_fldr + img_path)
+                    
                     file.write( sheet_n + "\n") # sheet number 
                     
                     # write to excel 
@@ -108,7 +112,7 @@ def recognize_instruments( img_fldr, circle_fldr, noexcel):
                         sheet1.write(wbcounter, 4, (str ( i [2] ))) # r
 
     if not noexcel:
-        wb.save('instrument report.xlsx')
+        wb.save('Instrument Report for '+pandidfname+'.xls')
     
 def recognize_sheet_numbers_for_sheet(original_image_name):
     ''' Takes an image object and returns the sheet number '''

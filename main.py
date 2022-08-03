@@ -21,7 +21,7 @@ August 2022
 
 program to look at instruments in p&ids
 
-1. add circles to current pdf (https://github.com/plangrid/pdf-annotate)
+1. add circles to current pdf
 2. get txt file of tags
 3. get excel file of tags
 4. get txt file of sheet -> page relation
@@ -34,6 +34,8 @@ def main():
                         help='pdf p&id in working directory that will be parsed')
     parser.add_argument('--flag_inst', action='store_true',
                         help='draw circles around p&id instrument circles in a new pdf')
+    parser.add_argument('--noannot', action='store_true',
+                        help='do not create an annoted pdf, only create an excel report. annotation takes a much longer time')
     parser.add_argument('--sheet2page', action='store_true',
                         help='create sheet and page number listing')
     parser.add_argument('--noexcel', action='store_true',
@@ -78,16 +80,19 @@ def main():
         # convert each pdf sheet to individual images
         file_conversions.pdf2im(args.source, image_source_fldr)
         # recognize the little circles and and create txt files with their coordinates
-        recognize_instruments(image_source_fldr, circ_fldr, args.noexcel)
-        # draw little circles around the instruments using the coodinates created in recognize_instruments
-        circle_file = annotate.draw_circles(circ_fldr, args.source) # annotate original pdf
+        recognize_instruments(image_source_fldr, circ_fldr, args.noexcel, args.noannot)
+        
+        # annotation is that longest thing, so give option to just get report
+        if not args.noannot:
+            # draw little circles around the instruments using the coodinates created in recognize_instruments
+            circle_file = annotate.draw_circles(circ_fldr, args.source, args.noannot) # annotate original pdf
         
         # delete image folders
         if not args.keep:
             shutil.rmtree(image_source_fldr) 
         
         # open new pdf
-        if args.open:
+        if args.open and not args.noannot:
             os.startfile(circle_file)
     elif args.sheet2page: # create a report about the sheet numbers and the page numbers
         
