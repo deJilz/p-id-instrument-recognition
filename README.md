@@ -6,7 +6,7 @@ In the early stages of projects, P&IDs often are pdfs thrown together with redli
 
 ## Features
 - Circular instrument highlighting: Will add red circles to all circular instruments on P&ID
-- Sheet to page report: Produces txt document relating sheet (ie 301) to page (ie pg 3)
+- Sheet to page report: Produces an excel or txt document relating sheet (ie 301) to page (ie pg 3)
 
 
 
@@ -19,5 +19,4 @@ The starting point of this repo was essentially forked from the masters thesis o
 
 
 ## Future Features
-- Output to Excel rather than txt
 - shift image interpretation to byte stream rather than saving images
