@@ -9,14 +9,14 @@ import cv2
     probably needs serious rework, the scales/cropings seem super specific to the sample p&id
     
 '''
-def crop_image ( file_path , dest_path ) :
+def crop_image ( file_path , cut_fldr ) :
     files = os.listdir ( file_path ) # list all the files ' names
     counter = 0
     for file in files :
         # print ( file )
         original_image_name = os.path.join ( file_path , file )
-        # dest_image_name = os. path.join ( dest_path , file )
-        dest_image_name = dest_path + str( counter ) + ".png"
+        # dest_image_name = os. path.join ( cut_fldr , file )
+        dest_image_name = cut_fldr + str( counter ) + ".png"
         if os.path.isfile ( original_image_name ) :
             #print ( original_image_name )
             original_image = cv2.imread ( original_image_name )

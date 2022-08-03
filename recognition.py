@@ -9,6 +9,7 @@ import cv2
 import pytesseract
 import re
 import xlwt
+import openpyxl
 
 '''
     -- show image
@@ -17,17 +18,30 @@ cv2.waitKey ()
 '''
 
 
-def recognize_instruments( img_fldr, circle_fldr, noexcel, noannot):
+def recognize_instruments( img_fldr, circle_fldr, noexcel, noannot, pandidfname):
+    
+    # create xl
+    wbcounter = 1
+    wb = openpyxl.Workbook()
+    wb.create_sheet(index=0, title='Instruments')
+    sh = wb.get_sheet_by_name("Instruments")
+    sh.cell(1,1).value = 'Instrument'
+    sh.cell(1,2).value = 'Sheet'
+    sh.cell(1,3).value = 'x center point'
+    sh.cell(1,4).value = 'y center point'
+    sh.cell(1,5).value = 'r'
+    
     
     # Create excel workbook and write headers
-    wbcounter = 0
-    wb = xlwt.Workbook()
-    sheet1 = wb.add_sheet('Instruments',cell_overwrite_ok=True)
-    sheet1.write(wbcounter, 0, 'Instrument')
-    sheet1.write(wbcounter, 1, 'Sheet')
-    sheet1.write(wbcounter, 2, 'x center point')
-    sheet1.write(wbcounter, 3, 'y center point')
-    sheet1.write(wbcounter, 4, 'r')
+    # wbcounter = 0
+    # wb = xlwt.Workbook()
+    # sheet1 = wb.add_sheet('Instruments')#,cell_overwrite_ok=True)
+    # #sheet1 = wb.get_sheet(0)
+    # sheet1.write(wbcounter, 0, 'Instrument')
+    # sheet1.write(wbcounter, 1, 'Sheet')
+    # sheet1.write(wbcounter, 2, 'x center point')
+    # sheet1.write(wbcounter, 3, 'y center point')
+    # sheet1.write(wbcounter, 4, 'r')
     
     # loop through each file in the img_fldr
     for img_path in [f for f in os.listdir(img_fldr) if os.path.isfile(os.path.join(img_fldr,f))]:
@@ -43,9 +57,12 @@ def recognize_instruments( img_fldr, circle_fldr, noexcel, noannot):
             file.write ('instrument x y r:\n')
             img = cv2.imread ( img_fldr + img_path )
             gray = cv2.cvtColor ( img , cv2.COLOR_BGR2GRAY )
-
+            
+            
+            # could include some image sizing selection to determine radius and houghcircle papameters
             # Hough Circle Transform with OpenCV
-            circles1 = cv2.HoughCircles ( gray , cv2.HOUGH_GRADIENT , 1 , 10 , param1 =100 , param2 =60 , minRadius =40, maxRadius =60)
+            #circles1 = cv2.HoughCircles ( gray , cv2.HOUGH_GRADIENT , 1 , 10 , param1 =100 , param2 =60 , minRadius =40, maxRadius =60) # worked for 2384x1684pdf
+            circles1 = cv2.HoughCircles ( gray , cv2.HOUGH_GRADIENT , 1 , 10 , param1 =100 , param2 =50 , minRadius =23, maxRadius =60) # trying for 1191x841pdf -> 3573x2524png -> circle r=27
             try: # handle if there are not circles on the sheet
                 circles = circles1 [0 , : , :]
             except: # continue to next image
@@ -69,6 +86,7 @@ def recognize_instruments( img_fldr, circle_fldr, noexcel, noannot):
                 cv2.circle ( img , ( i [0] , i [1]) , i [2] , (255 , 255 , 255) , 7)
 
                 # filter out the wrongly detected circles
+                #if i [2] >= 25:
                 if i [2] >= 25:
                     counter += 1
                     # generate the candidate area
@@ -80,6 +98,9 @@ def recognize_instruments( img_fldr, circle_fldr, noexcel, noannot):
                     # Recognition is very sensitive to this configuration
                     custom_config = r'--oem 3 --psm 6'
                     text = pytesseract.image_to_string (cropped_circles_rgb , config = custom_config )
+                    
+                    # cv2.imshow (" circles ", cropped_circles_rgb )
+                    # cv2.waitKey ()
                     
                     
                     # Postprocessing Steps :
@@ -103,16 +124,24 @@ def recognize_instruments( img_fldr, circle_fldr, noexcel, noannot):
                     file.write( sheet_n + "\n") # sheet number 
                     
                     # write to excel 
-                    wbcounter += wbcounter
-                    if not noexcel:
-                        sheet1.write(wbcounter, 0, text) # tag 
-                        sheet1.write(wbcounter, 1, sheet_n) # sheet
-                        sheet1.write(wbcounter, 2, (str ( i [0] ))) # center point x
-                        sheet1.write(wbcounter, 3, (str ( i [1] ))) # center point y
-                        sheet1.write(wbcounter, 4, (str ( i [2] ))) # r
+                    wbcounter = wbcounter + 1
+                    if noexcel:
+                        continue
+                    sh.cell(wbcounter,1).value = text
+                    sh.cell(wbcounter,2).value = sheet_n
+                    sh.cell(wbcounter,3).value = str ( i [0] )
+                    sh.cell(wbcounter,4).value = str ( i [1] )
+                    sh.cell(wbcounter,5).value = str ( i [2] )
+                        
+                        
+                        # sheet1.write(wbcounter, 0, text) # tag 
+                        # sheet1.write(wbcounter, 1, sheet_n) # sheet
+                        # sheet1.write(wbcounter, 2, (str ( i [0] ))) # center point x
+                        # sheet1.write(wbcounter, 3, (str ( i [1] ))) # center point y
+                        # sheet1.write(wbcounter, 4, (str ( i [2] ))) # r
 
     if not noexcel:
-        wb.save('Instrument Report for '+pandidfname+'.xls')
+        wb.save('Instrument Report for '+pandidfname+'.xlsx')
     
 def recognize_sheet_numbers_for_sheet(original_image_name):
     ''' Takes an image object and returns the sheet number '''

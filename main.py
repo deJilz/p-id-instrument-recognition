@@ -78,14 +78,16 @@ def main():
     if args.flag_inst: # flag instruments in new document
         
         # convert each pdf sheet to individual images
-        file_conversions.pdf2im(args.source, image_source_fldr)
+        #file_conversions.pdf2im(args.source, image_source_fldr)
+        # crop notes out
+        crop_image(image_source_fldr, cut_fldr)
         # recognize the little circles and and create txt files with their coordinates
-        recognize_instruments(image_source_fldr, circ_fldr, args.noexcel, args.noannot)
+        recognize_instruments(cut_fldr, circ_fldr, args.noexcel, args.noannot, args.source)
         
         # annotation is that longest thing, so give option to just get report
         if not args.noannot:
             # draw little circles around the instruments using the coodinates created in recognize_instruments
-            circle_file = annotate.draw_circles(circ_fldr, args.source, args.noannot) # annotate original pdf
+            circle_file = annotate.draw_circles(circ_fldr, args.source) # annotate original pdf
         
         # delete image folders
         if not args.keep:

@@ -29,7 +29,6 @@ def draw_circles(circ_fldr, pandidfname):
     savefname = os.getcwd() + "/" + pandidfname +" - inst marked.pdf"
     annotator = PdfAnnotator(os.getcwd() + "/" + pandidfname)
     annotator.set_page_dimensions((1684,2384),180)
-    annotator.add_annotation('square', Location(x1=0, y1=0, x2=50, y2=50, page=0), Appearance(stroke_color=(1, 0, 0),stroke_width=50))
     
     for root, dirs, files in os.walk(circ_fldr):
         for f in files:
