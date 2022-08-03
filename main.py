@@ -100,7 +100,10 @@ def main():
         file_conversions.pdf2im(args.source, image_source_fldr)
         # create either txt or excel report about the sheet to page number linkings
         recognize_sheet_numbers_for_document(image_source_fldr, args.source, args.noexcel)
-
+        
+        # delete image folders
+        if not args.keep:
+            shutil.rmtree(image_source_fldr) 
     else:
         print("welp nothing else is implemented sooooo")
         quit()
