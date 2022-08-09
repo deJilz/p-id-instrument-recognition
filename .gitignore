@@ -1,5 +1,6 @@
 # private
 *.pdf
+p-ids/*.pdf
 
 # paper
 master_Hua_Yun_2022.pdf
