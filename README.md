@@ -20,3 +20,4 @@ The starting point of this repo was essentially forked from the masters thesis o
 
 ## Future Features
 - shift image interpretation to byte stream rather than saving images
+- currently, pdf annotation only works for one size of pdf. in the future, it will work regardless.
