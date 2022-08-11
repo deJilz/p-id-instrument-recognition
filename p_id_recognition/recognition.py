@@ -43,30 +43,48 @@ def recognize_instruments( pandidfname, noexcel, noannot):
         # only look at files that are pngs
         if img_path.split ('.') [ -1] == 'png':
             # name of the image in the folder , e.g. 20
-            img_name = img_path#.split ('.') [0]
+            img_name = img_path
             img_name_stem = pathlib.Path(img_name).stem
-            #pgcounter += 1
-            # Create txt and write headers
+            
+            # Create txt file
             file_path = os.path.join(circle_fldr+img_name_stem+".txt")
             file = open ( file_path , 'w')
-            file.write ('instrument x y r:\n')
-            img = cv2.imread ( img_fldr + img_path )
-            gray = cv2.cvtColor ( img , cv2.COLOR_BGR2GRAY )
             
+            # write headers
+            file.write ('instrument x y r:\n')
+            
+            # read in image
+            img = cv2.imread ( img_fldr + img_path )
+            
+            
+            
+            # figure out radius/shape ratios
+            # h, w, d = img.shape # # height, width, depth
+            # resize_factor = 1 
+            # resized = imutils.resize(img, width=int(w / resize_factor))
+            
+            # create gray image for circle recog
+            gray = cv2.cvtColor (img , cv2.COLOR_BGR2GRAY)
             
             # could include some image sizing selection to determine radius and houghcircle papameters
-            # Hough Circle Transform with OpenCV
-            circles1 = cv2.HoughCircles ( gray , cv2.HOUGH_GRADIENT , 1 , 10 , param1 =100 , 
-                                          param2 =60 , minRadius =40, maxRadius =60) # worked for 2384x1684pdf
-            #circles1 = cv2.HoughCircles ( gray , cv2.HOUGH_GRADIENT , 1 , 10 , param1 =100 , 
-                                          #param2 =50 , minRadius =23, maxRadius =60) 
-                                          # trying for 1191x841pdf -> 3573x2524png -> circle r=27
+            # Hough Circle Transform with OpenCV # worked for 2384x1684pdf
+            # https://docs.opencv.org/4.x/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
+            
+            circles1 = cv2.HoughCircles ( gray,                 # grayscale input image
+                                          cv2.HOUGH_GRADIENT,   # detection method (only HOUGH_GRADIENT or HOUGH_GRADIENT_ALT)
+                                          1,                    # ratio of resolutions
+                                          10,                   # minimum distance between the centers
+                                          param1 = 100,         # the higher threshold of the two passed to the Canny edge detector
+                                          param2 = 60,          # accum threshold for the centers
+                                          minRadius = 40,       # min circle radius
+                                          maxRadius = 60)       # max circle radius
             
             
             try: # handle if there are not circles on the sheet
                 circles = circles1 [0 , : , :]
             except: # continue to next image
                 continue
+            
             circles = np.uint16 ( np.around ( circles ) )
             counter = 0
 
