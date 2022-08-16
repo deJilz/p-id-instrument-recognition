@@ -70,6 +70,15 @@ def recognize_instruments( pandidfname, noexcel, noannot):
             # Hough Circle Transform with OpenCV # worked for 2384x1684pdf
             # https://docs.opencv.org/4.x/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
             
+            # circles1 = cv2.HoughCircles ( gray,                 # grayscale input image
+                                          # cv2.HOUGH_GRADIENT,   # detection method (only HOUGH_GRADIENT or HOUGH_GRADIENT_ALT)
+                                          # 1,                    # ratio of resolutions
+                                          # 10,                   # minimum distance between the centers
+                                          # param1 = 100,         # the higher threshold of the two passed to the Canny edge detector
+                                          # param2 = 60,          # accum threshold for the centers
+                                          # minRadius = 40,       # min circle radius
+                                          # maxRadius = 60)       # max circle radius
+                                          
             circles1 = cv2.HoughCircles ( gray,                 # grayscale input image
                                           cv2.HOUGH_GRADIENT,   # detection method (only HOUGH_GRADIENT or HOUGH_GRADIENT_ALT)
                                           1,                    # ratio of resolutions

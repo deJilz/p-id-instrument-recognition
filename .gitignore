@@ -1,6 +1,7 @@
 # private
 *.pdf
 p-ids/*.pdf
+outs/*.xlsx
 
 # paper
 master_Hua_Yun_2022.pdf
