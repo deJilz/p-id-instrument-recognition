@@ -21,29 +21,35 @@ __author__ = "Connor DeJohn"
 August 2022 
 
 program to look at instruments in p&ids
-
-1. add circles to current pdf
-2. get txt file of tags
-3. get excel file of tags
-4. get txt file of sheet -> page relation
 """
 
 def main():
     # instantiate arg parser
     parser = argparse.ArgumentParser(description='command line script to parse p&id')
-    parser.add_argument('--source', type=str,
+    parser.add_argument('--source', 
+                        '-s',
+                        type=str,
                         help='pdf p&id in working directory that will be parsed')
-    parser.add_argument('--flag_inst', action='store_true',
+    parser.add_argument('--flag_inst', 
+                        '-fi',
+                        action='store_true',
                         help='draw circles around p&id instrument circles in a new pdf')
-    parser.add_argument('--noannot', action='store_true',
+    parser.add_argument('--noannot', 
+                        action='store_true',
                         help='do not create an annoted pdf, only create an excel report. annotation takes a much longer time')
-    parser.add_argument('--sheet2page', action='store_true',
+    parser.add_argument('--sheet2page', 
+                        action='store_true',
                         help='create sheet and page number listing')
-    parser.add_argument('--noexcel', action='store_true',
+    parser.add_argument('--noexcel', 
+                        action='store_true',
                         help='dont generate an excel sheet of instruments')
-    parser.add_argument('--open', action='store_true',
+    parser.add_argument('--open', 
+                        '-o',
+                        action='store_true',
                         help='open pdf file after generating')
-    parser.add_argument('--keep', action='store_true',
+    parser.add_argument('--keep', 
+                        '-k',
+                        action='store_true',
                         help='dont delete image files')
                         
     args = parser.parse_args()
@@ -60,7 +66,8 @@ def main():
     
     # check on pdf file
     pandid_wholefile = ""
-    if args.source in [f for f in os.listdir(cur_dir) if os.path.isfile(os.path.join(cur_dir,f))]: # file must exist in cur dir
+    # file must exist in cur dir
+    if args.source in [f for f in os.listdir(cur_dir) if os.path.isfile(os.path.join(cur_dir,f))]: 
         # file is in cur_dir
         pandid_wholefile = args.source
     elif args.source in [f for f in os.listdir(f_dir) if os.path.isfile(os.path.join(f_dir,f))]: # check file dir
